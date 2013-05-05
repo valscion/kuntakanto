@@ -18,7 +18,7 @@ dime.Gfx = {
   },
 
   tick: function (delta) {
-    this._player.tick();
+    this._player.tick(delta);
     this.clear();
     this.draw();
   },
@@ -37,32 +37,83 @@ dime.Gfx = {
 dime.Player = function () {
   this.x = 0;
   this.y = 200;
-  this.img = null;
-  this.imgReady = false;
+
+  this.frames = [];
+  this.countOfReadyFrames = 0;
+
+  this.currentFrame = 0;
+  this.movedSinceLastFrame = 0;
+
+  this.speedInPxPerSec = 100;
+
+  this.mirrored = false;
 };
+
+dime.Player.FRAME_LENGTH_IN_PX = 15;
 
 dime.Player.prototype = {
   init: function () {
-    var self = this;
-    this.img = new Image();
-    this.img.onload = function () {
-      self.imgReady = true;
+    var self = this, i, tempImg;
+
+    for (i = 5; i >= 1; i--) {
+      tempImg = new Image();
+      tempImg.onload = function () {
+        self.countOfReadyFrames++;
+      }
+      (function (frameId) {
+        tempImg.onerror = function () {
+          console.warn('Failed to load frame ' + frameId + ' for player');
+        }
+      }(i));
+      tempImg.src = dime.Config.gfxDir + "ukkeli" + i + ".png";
+      this.frames.push(tempImg);
     }
-    this.img.onerror = function () {
-      console.warn('Failed to load sprite for player');
-    }
-    this.img.src = dime.Config.gfxDir + "ukkeli.png";
   },
 
   draw: function (context) {
-    if (this.imgReady) {
-      context.drawImage(this.img, this.x, this.y);
+    if (this.isReady()) {
+      context.save();
+
+      var fixMiddle = -this.frames[0].width / 2;
+      if (this.mirrored) {
+        fixMiddle *= -1;
+      }
+      context.translate(this.x + fixMiddle, this.y);
+      if (this.mirrored) {
+        context.scale(-1, 1);
+      }
+      context.drawImage(this.frames[this.currentFrame], 0, 0);
+      context.restore();
     }
   },
 
+  isReady: function () {
+    return (this.countOfReadyFrames == this.frames.length)
+  },
+
   tick: function (delta) {
-    if (!this.imgReady)
+    if (!this.isReady())
       return;
-    this.x += dime.Utils.pxPerSec(40);
+
+    var movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
+
+    this.movedSinceLastFrame += movement;
+    if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
+      this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;
+      this.currentFrame++;
+      if (this.currentFrame >= this.frames.length) {
+        this.currentFrame = 0;
+      }
+    }
+    if (this.mirrored) {
+      this.x -= movement;
+    }
+    else {
+      this.x += movement;
+    }
+
+    if (this.x > dime.Config.width - 200 || this.x < 0) {
+      this.mirrored = !this.mirrored;
+    }
   }
 };

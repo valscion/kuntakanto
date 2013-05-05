@@ -45,6 +45,6 @@ dime.Game = {
         }
       }
     }
-    tick();
+    tick(0);
   }
 };
