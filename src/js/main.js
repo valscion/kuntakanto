@@ -1,18 +1,27 @@
 // main.js
 
-var dime = {};
+'use strict';
 
-window.addEventListener('load', function () {
-  var canvas, ctx;
+dime.init = function () {
 
-  canvas = document.getElementsByTagName('canvas')[0];
+  function findCanvasElement() {
+    var canvasElement = document.getElementById('gameCanvas');
 
-  canvas.width = 800;
-  canvas.height = 600;
+    if (canvasElement) {
+      return canvasElement;
+    }
+    else {
+      throw new Error('Page needs to have a canvas with id "gameCanvas"');
+    }
+  }
 
-  ctx = canvas.getContext('2d');
-  dime.canvas = canvas;
-  dime.ctx = ctx;
+  function setupCanvasElement(canvas) {
+    canvas.width = 800;
+    canvas.height = 600;
+  }
 
-  ctx.fillText('Hello world!', 20, 20);
-});
+  var canvas = findCanvasElement();
+  setupCanvasElement(canvas);
+  dime.Gfx.init(canvas.getContext('2d'));
+  dime.Gfx.draw();
+};

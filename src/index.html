@@ -2,11 +2,23 @@
 <html>
 <head>
   <title>Test</title>
+  <script>
+    // Our precious global namespace, which will hold all the stuff
+    var dime = {};
+  </script>
+
+  <!-- Load all different javascript files -->
   <script src="js/main.js"></script>
+  <script src="js/view/Gfx.js"></script>
+
+  <!-- Initialize game on window load -->
+  <script>
+    window.addEventListener('load', dime.init);
+  </script>
 </head>
 
 <body>
-  <canvas>
+  <canvas id="gameCanvas">
     Get a better browser which supports &lt;canvas&gt;!
   </canvas>
 </body>
