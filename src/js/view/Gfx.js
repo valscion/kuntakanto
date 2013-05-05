@@ -11,8 +11,21 @@ dime.Gfx = {
     this._ctx = renderingContext;
   },
 
+  setup: function () {
+
+  },
+
+  tick: function (delta) {
+    this.clear();
+    this.draw();
+  },
+
   draw: function () {
     this._ctx.fillText('Hello world!', 10, 10)
+  },
+
+  clear: function () {
+    this._ctx.clearRect(0, 0, dime.Config.width, dime.Config.height);
   }
 
 };

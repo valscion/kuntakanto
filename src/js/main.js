@@ -16,12 +16,13 @@ dime.init = function () {
   }
 
   function setupCanvasElement(canvas) {
-    canvas.width = 800;
-    canvas.height = 600;
+    canvas.width = dime.Config.width;
+    canvas.height = dime.Config.height;
   }
 
   var canvas = findCanvasElement();
   setupCanvasElement(canvas);
   dime.Gfx.init(canvas.getContext('2d'));
-  dime.Gfx.draw();
+
+  dime.Game.init();
 };
