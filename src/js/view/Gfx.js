@@ -12,7 +12,7 @@ dime.Gfx = {
   },
 
   setup: function () {
-
+    dime.SpriteLoader.loadAllSprites();
   },
 
   tick: function (delta) {
