@@ -12,7 +12,7 @@ dime.BgScroller = function (imgOrdinal, player, speedFactor) {
 
 dime.BgScroller.prototype = {
   setup: function () {
-    var self = this, i, tempImg;
+    var self = this, tempImg;
 
     tempImg = new Image();
     tempImg.onload = function () {
