@@ -1,27 +1,69 @@
 // Player.js
-// - Represents the player
 
-dime.Player = {
-  x: 0,
-  y: 0,
-  sprite: null,
+'use strict';
 
+dime.Player = function () {
+  this.x = 80;
+  this.y = 200;
+
+  this.frames = [];
+  this.countOfReadyFrames = 0;
+
+  this.currentFrame = 0;
+  this.movedSinceLastFrame = 0;
+
+  this.speedInPxPerSec = 100;
+};
+
+dime.Player.FRAME_LENGTH_IN_PX = 15;
+
+dime.Player.prototype = {
   init: function () {
-    this.x = 50;
-    this.y = 400;
-    this.sprite = dime.PlayerSprite;
+    var self = this, i, tempImg;
+
+    for (i = 5; i >= 1; i--) {
+      tempImg = new Image();
+      tempImg.onload = function () {
+        self.countOfReadyFrames++;
+      }
+      (function (frameId) {
+        tempImg.onerror = function () {
+          console.warn('Failed to load frame ' + frameId + ' for player');
+        }
+      }(i));
+      tempImg.src = dime.Config.gfxDir + "ukkeli" + i + ".png";
+      this.frames.push(tempImg);
+    }
+  },
+
+  draw: function (context) {
+    if (this.isReady()) {
+      context.save();
+
+      var fixMiddle = -this.frames[0].width / 2;
+      context.translate(this.x + fixMiddle, this.y);
+      context.drawImage(this.frames[this.currentFrame], 0, 0);
+      context.restore();
+    }
+  },
+
+  isReady: function () {
+    return (this.countOfReadyFrames == this.frames.length)
   },
 
   tick: function (delta) {
+    if (!this.isReady())
+      return;
 
-  },
+    var movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
 
-  getDrawInformation: function () {
-    var sprite = dime.SpriteContainer.getSpriteIfReady(dime.PlayerSprite);
-    return {
-      x: this.x,
-      y: this.y,
-      img: sprite.img
+    this.movedSinceLastFrame += movement;
+    if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
+      this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;
+      this.currentFrame++;
+      if (this.currentFrame >= this.frames.length) {
+        this.currentFrame = 0;
+      }
     }
   }
 };
