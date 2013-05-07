@@ -13,14 +13,8 @@ dime.Gfx = {
     var self = this;
     this._ctx = renderingContext;
     this._player = new dime.Player();
-    this._bgScrollers.push(
-      new dime.BgScroller(1, function () {
-        return self._player.getSpeedInPxPerSec();
-      })
-    );
-    this._bgScrollers.push(
-      new dime.BgScroller(2, function () { return 15.0; })
-    );
+    this._bgScrollers.push(new dime.BgScroller(1, this._player, 1.0));
+    this._bgScrollers.push(new dime.BgScroller(2, this._player, 0.1));
   },
 
   setup: function () {
@@ -53,11 +47,10 @@ dime.Gfx = {
 };
 
 
-dime.BgScroller = function (imgOrdinal, speedCallback) {
+dime.BgScroller = function (imgOrdinal, player, speedFactor) {
   this.x = 0;
-  this.speedCallback = ('function' === typeof speedCallback) ?
-    speedCallback :
-    function () { return 0.0; };
+  this.player = player;
+  this.speedFactor = speedFactor;
   this.imgOrdinal = imgOrdinal;
   this.img = null;
 };
@@ -97,7 +90,8 @@ dime.BgScroller.prototype = {
 
   tick: function (delta) {
     if (this.isReady()) {
-      var movement = dime.Utils.pxPerSec(this.speedCallback());
+      var movement = dime.Utils.pxPerSec(this.player.getSpeedInPxPerSec());
+      movement *= this.speedFactor;
       this.x -= movement;
 
       if (this.x + this.img.width < 0) {
