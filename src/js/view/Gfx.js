@@ -35,7 +35,7 @@ dime.Gfx = {
 };
 
 dime.Player = function () {
-  this.x = 0;
+  this.x = 80;
   this.y = 200;
 
   this.frames = [];
@@ -45,8 +45,6 @@ dime.Player = function () {
   this.movedSinceLastFrame = 0;
 
   this.speedInPxPerSec = 100;
-
-  this.mirrored = false;
 };
 
 dime.Player.FRAME_LENGTH_IN_PX = 15;
@@ -75,13 +73,7 @@ dime.Player.prototype = {
       context.save();
 
       var fixMiddle = -this.frames[0].width / 2;
-      if (this.mirrored) {
-        fixMiddle *= -1;
-      }
       context.translate(this.x + fixMiddle, this.y);
-      if (this.mirrored) {
-        context.scale(-1, 1);
-      }
       context.drawImage(this.frames[this.currentFrame], 0, 0);
       context.restore();
     }
@@ -104,16 +96,6 @@ dime.Player.prototype = {
       if (this.currentFrame >= this.frames.length) {
         this.currentFrame = 0;
       }
-    }
-    if (this.mirrored) {
-      this.x -= movement;
-    }
-    else {
-      this.x += movement;
-    }
-
-    if (this.x > dime.Config.width - 200 || this.x < 0) {
-      this.mirrored = !this.mirrored;
     }
   }
 };
