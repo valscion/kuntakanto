@@ -6,16 +6,19 @@ dime.Player = function () {
   this.x = 80;
   this.y = 200;
 
+  this.yPlus = 0;
+  this.midair = false;
+
   this.frames = [];
   this.countOfReadyFrames = 0;
 
   this.currentFrame = 0;
   this.movedSinceLastFrame = 0;
 
-  this.speedInPxPerSec = 100;
+  this.speedInPxPerSec = 200;
 };
 
-dime.Player.FRAME_LENGTH_IN_PX = 15;
+dime.Player.FRAME_LENGTH_IN_PX = 30;
 
 dime.Player.prototype = {
   setup: function () {
@@ -52,22 +55,40 @@ dime.Player.prototype = {
   },
 
   tick: function (delta) {
+    var modifier, movement;
     if (!this.isReady())
       return;
 
-    var movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
+    if (this.midair) {
+      modifier = delta / 1000;
+      this.yPlus -= dime.Config.gravity * modifier;
+      this.y -= this.yPlus * modifier;
 
-    this.movedSinceLastFrame += movement;
-    if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
-      this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;
-      this.currentFrame++;
-      if (this.currentFrame >= this.frames.length) {
-        this.currentFrame = 0;
+      if (this.y > 200) {
+        this.y = 200;
+        this.yPlus = 0;
+        this.midair = false;
+      }
+    }
+    else {
+      movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
+      this.movedSinceLastFrame += movement;
+      if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
+        this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;
+        this.currentFrame++;
+        if (this.currentFrame >= this.frames.length) {
+          this.currentFrame = 0;
+        }
       }
     }
   },
 
   getSpeedInPxPerSec: function () {
     return this.speedInPxPerSec;
+  },
+
+  jump: function (force) {
+    this.yPlus = force || 600;
+    this.midair = true;
   }
 };

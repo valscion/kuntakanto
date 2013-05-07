@@ -5,5 +5,6 @@
 dime.Config = {
   width: 700,
   height: 500,
-  gfxDir: '../gfx/'
+  gfxDir: '../gfx/',
+  gravity: 1500
 };
