@@ -10,10 +10,17 @@ dime.Gfx = {
   _bgScrollers: [],
 
   init: function (renderingContext) {
+    var self = this;
     this._ctx = renderingContext;
     this._player = new dime.Player();
-    this._bgScrollers.push(new dime.BgScroller(1, 100));
-    this._bgScrollers.push(new dime.BgScroller(2, 15.0));
+    this._bgScrollers.push(
+      new dime.BgScroller(1, function () {
+        return self._player.getSpeedInPxPerSec();
+      })
+    );
+    this._bgScrollers.push(
+      new dime.BgScroller(2, function () { return 15.0; })
+    );
   },
 
   setup: function () {
@@ -46,9 +53,11 @@ dime.Gfx = {
 };
 
 
-dime.BgScroller = function (imgOrdinal, speedInPxPerSec) {
+dime.BgScroller = function (imgOrdinal, speedCallback) {
   this.x = 0;
-  this.speedInPxPerSec = speedInPxPerSec || 0;
+  this.speedCallback = ('function' === typeof speedCallback) ?
+    speedCallback :
+    function () { return 0.0; };
   this.imgOrdinal = imgOrdinal;
   this.img = null;
 };
@@ -73,6 +82,11 @@ dime.BgScroller.prototype = {
 
       context.translate(this.x, 0);
       context.drawImage(this.img, 0, 0);
+
+      if (this.x + this.img.width <= dime.Config.width) {
+        context.translate(this.img.width, 0);
+        context.drawImage(this.img, 0, 0);
+      }
       context.restore();
     }
   },
@@ -83,8 +97,12 @@ dime.BgScroller.prototype = {
 
   tick: function (delta) {
     if (this.isReady()) {
-      var movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
+      var movement = dime.Utils.pxPerSec(this.speedCallback());
       this.x -= movement;
+
+      if (this.x + this.img.width < 0) {
+        this.x += this.img.width;
+      }
     }
   }
 };

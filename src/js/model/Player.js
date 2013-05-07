@@ -65,5 +65,9 @@ dime.Player.prototype = {
         this.currentFrame = 0;
       }
     }
+  },
+
+  getSpeedInPxPerSec: function () {
+    return this.speedInPxPerSec;
   }
 };
