@@ -18,7 +18,7 @@ dime.Player = function () {
 dime.Player.FRAME_LENGTH_IN_PX = 15;
 
 dime.Player.prototype = {
-  init: function () {
+  setup: function () {
     var self = this, i, tempImg;
 
     for (i = 5; i >= 1; i--) {
