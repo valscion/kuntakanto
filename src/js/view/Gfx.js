@@ -82,11 +82,12 @@ dime.GUI.prototype = {
       context.translate(0, this.y);
       context.drawImage(this.img, 0, 0);
 
-      context.font = '28px Verdana';
+      context.font = '24px Verdana';
       context.textBaseline = 'middle';
       context.textAlign = 'left';
+      context.fillStyle = 'white';
 
-      context.fillText('40 km', dime.GUI.TEXT_X_POS, 18);
+      context.fillText('40 km', dime.GUI.TEXT_X_POS, 20);
       context.restore();
     }
   },
