@@ -34,7 +34,7 @@ dime.Game = {
       };
     })();
 
-    var lastTickTime = 0;
+    var lastTickTime = window.mozAnimationStartTime || 0;
     function tick(timePassedSinceFirstTick) {
       var delta = timePassedSinceFirstTick - lastTickTime;
       lastTickTime = timePassedSinceFirstTick;
