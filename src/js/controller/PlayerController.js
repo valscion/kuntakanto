@@ -36,6 +36,9 @@ dime.PlayerController.prototype = {
   },
 
   keyUp: function (keyName) {
-    this.player.jump();
+    if (this.player.canJump()) {
+      this.player.jump();
+      dime.Audio.playSound();
+    }
   }
 };
