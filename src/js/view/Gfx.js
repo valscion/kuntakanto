@@ -14,8 +14,12 @@ dime.Gfx = {
     var self = this;
     this._ctx = renderingContext;
     this._player = new dime.Player();
-    this._bgScrollers.push(new dime.BgScroller(1, this._player, 1.0));
-    this._bgScrollers.push(new dime.BgScroller(2, this._player, 0.1));
+    this._bgScrollers.push(new dime.BgScroller(1, function speedCb1() {
+      return (self._player.getSpeedInPxPerSec());
+    }));
+    this._bgScrollers.push(new dime.BgScroller(2, function speedCb2() {
+      return (self._player.getSpeedInPxPerSec() * 0.1);
+    }));
     this._gui = new dime.GUI();
   },
 

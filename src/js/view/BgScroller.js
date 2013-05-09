@@ -2,11 +2,10 @@
 
 'use strict';
 
-dime.BgScroller = function (imgOrdinal, player, speedFactor) {
-  this.x = 0;
-  this.player = player;
-  this.speedFactor = speedFactor;
+dime.BgScroller = function (imgOrdinal, speedCallback) {
   this.imgOrdinal = imgOrdinal;
+  this.getMovementSpeed = speedCallback;
+  this.x = 0;
   this.img = null;
 };
 
@@ -45,8 +44,7 @@ dime.BgScroller.prototype = {
 
   tick: function (delta) {
     if (this.isReady()) {
-      var movement = dime.Utils.pxPerSec(this.player.getSpeedInPxPerSec());
-      movement *= this.speedFactor;
+      var movement = dime.Utils.pxPerSec(this.getMovementSpeed());
       this.x -= movement;
 
       if (this.x + this.img.width < 0) {
