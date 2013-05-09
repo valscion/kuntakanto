@@ -97,7 +97,7 @@ dime.Player.prototype = {
   },
 
   // Returns players current speed in pixels per second
-  getSpeedInPxPerSec: function () {
+  getSpeed: function () {
     return this.speedInPxPerSec;
   },
 
@@ -112,5 +112,13 @@ dime.Player.prototype = {
   // Returns whether the player can currently jump or not
   canJump: function () {
     return !this.midair;
+  },
+
+  // Modifies player speed by the given amount
+  modifySpeed: function (amount) {
+    this.speedInPxPerSec += amount;
+    if (this.speedInPxPerSec < 0) {
+      this.speedInPxPerSec = 0;
+    }
   }
 };

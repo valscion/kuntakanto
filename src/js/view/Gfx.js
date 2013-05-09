@@ -43,6 +43,8 @@ dime.Gfx = {
     }
     this.clear();
     this.draw();
+    document.getElementById('debug').innerHTML =
+      this._player.speedInPxPerSec.toFixed(2);
   },
 
   // Draws all the graphics
