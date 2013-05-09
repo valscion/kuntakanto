@@ -16,15 +16,9 @@ dime.Gfx = {
     this._ctx = renderingContext;
     this._player = new dime.Player();
 
-    this._bgGraphics.push(new dime.BgScroller(1, function speedCb1() {
-      return (self._player.getSpeedInPxPerSec());
-    }));
-
+    this._bgGraphics.push(new dime.BgScroller(1, 1.0));
     this._bgGraphics.push(new dime.BgSignContainer(300));
-
-    this._bgGraphics.push(new dime.BgScroller(2, function speedCb2() {
-      return (self._player.getSpeedInPxPerSec() * 0.1);
-    }));
+    this._bgGraphics.push(new dime.BgScroller(2, 0.1));
 
     this._gui = new dime.GUI();
   },
@@ -105,6 +99,7 @@ dime.BgSignContainer.prototype = {
     for (i = 0; i < this.signs.length; i++) {
       signImg = this.signs[i];
       x = dime.BgSignContainer.SIGN_LOCATIONS[i];
+      x -= dime.Game.status.distanceRanInPx;
       context.drawImage(signImg, x, this.baseLineY);
     }
   },

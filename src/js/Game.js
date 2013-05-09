@@ -12,7 +12,7 @@ dime.Game = {
 
   // Game status is stored here for general lookup
   status: {
-    runDistanceInPx: 0
+    distanceRanInPx: 0
   },
 
   // Initializes the game and calls setup() for all the above objects

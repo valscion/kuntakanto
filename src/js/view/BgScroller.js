@@ -4,10 +4,10 @@
 'use strict';
 
 // Constructor for setting up a new background scroller with the given ordinal
-// and a callback to query scroller speed from.
-dime.BgScroller = function (imgOrdinal, speedCallback) {
+// and a speed factor related to player run amount
+dime.BgScroller = function (imgOrdinal, speedFactor) {
   this.imgOrdinal = imgOrdinal;
-  this.getMovementSpeed = speedCallback;
+  this.speedFactor = speedFactor;
   this.x = 0;
   this.img = null;
 };
@@ -52,10 +52,9 @@ dime.BgScroller.prototype = {
   // Called on every tick of the game
   tick: function (delta) {
     if (this.isReady()) {
-      var movement = dime.Utils.pxPerSec(this.getMovementSpeed());
-      this.x -= movement;
+      this.x = -dime.Game.status.distanceRanInPx * this.speedFactor;
 
-      if (this.x + this.img.width < 0) {
+      while (this.x + this.img.width < 0) {
         this.x += this.img.width;
       }
     }

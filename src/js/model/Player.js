@@ -72,7 +72,7 @@ dime.Player.prototype = {
       return;
 
     movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
-    dime.Game.status.runDistanceInPx += movement;
+    dime.Game.status.distanceRanInPx += movement;
     if (this.midair) {
       modifier = delta / 1000;
       this.yPlus -= dime.Config.gravity * modifier;
