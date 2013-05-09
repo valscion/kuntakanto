@@ -88,7 +88,13 @@ dime.Player.prototype = {
   },
 
   jump: function (force) {
-    this.yPlus = force || 600;
-    this.midair = true;
+    if (this.canJump()) {
+      this.yPlus = force || 600;
+      this.midair = true;
+    }
+  },
+
+  canJump: function () {
+    return !this.midair;
   }
 };
