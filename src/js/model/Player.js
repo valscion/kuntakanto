@@ -71,6 +71,8 @@ dime.Player.prototype = {
     if (!this.isReady())
       return;
 
+    movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
+    dime.Game.status.runDistanceInPx += movement;
     if (this.midair) {
       modifier = delta / 1000;
       this.yPlus -= dime.Config.gravity * modifier;
@@ -83,7 +85,6 @@ dime.Player.prototype = {
       }
     }
     else {
-      movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
       this.movedSinceLastFrame += movement;
       if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
         this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;

@@ -10,6 +10,11 @@ dime.Game = {
   // frame.
   _objectsToSetupAndTick: [dime.Utils, dime.Gfx, dime.Controllers],
 
+  // Game status is stored here for general lookup
+  status: {
+    runDistanceInPx: 0
+  },
+
   // Initializes the game and calls setup() for all the above objects
   init: function () {
     var i, loopedObject;

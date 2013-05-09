@@ -38,7 +38,9 @@ dime.GUI.prototype = {
       context.textAlign = 'left';
       context.fillStyle = 'white';
 
-      context.fillText('40 km', dime.GUI.TEXT_X_POS, 20);
+      var distanceLeft = 10 - dime.Game.status.runDistanceInPx / 2000;
+      distanceLeft = distanceLeft.toFixed(2);
+      context.fillText(distanceLeft + ' km', dime.GUI.TEXT_X_POS, 20);
       context.restore();
     }
   },
