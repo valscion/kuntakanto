@@ -1,7 +1,10 @@
 // main.js
+// - The main starting point of the game. Responsible for calling the necessary
+//   init() functions and setting up the canvas but nothing more.
 
 'use strict';
 
+// Initializes the whole freaking game. Called when the document has loaded.
 dime.init = function () {
 
   function findCanvasElement() {

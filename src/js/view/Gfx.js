@@ -10,6 +10,7 @@ dime.Gfx = {
   _bgScrollers: [],
   _gui: null,
 
+  // Initializes the graphical context and private variables
   init: function (renderingContext) {
     var self = this;
     this._ctx = renderingContext;
@@ -23,6 +24,7 @@ dime.Gfx = {
     this._gui = new dime.GUI();
   },
 
+  // Sets up all that needs to be set up (player, scroller, gui...)
   setup: function () {
     this._player.setup();
     for (var i = this._bgScrollers.length - 1; i >= 0; i--) {
@@ -31,6 +33,8 @@ dime.Gfx = {
     this._gui.setup();
   },
 
+  // Called on every frame, this handles ticking all the graphical things in
+  // the game as well.
   tick: function (delta) {
     this._player.tick(delta);
     for (var i = this._bgScrollers.length - 1; i >= 0; i--) {
@@ -40,6 +44,7 @@ dime.Gfx = {
     this.draw();
   },
 
+  // Draws all the graphics
   draw: function () {
     for (var i = this._bgScrollers.length - 1; i >= 0; i--) {
       this._bgScrollers[i].draw(this._ctx);
@@ -48,6 +53,7 @@ dime.Gfx = {
     this._gui.draw(this._ctx);
   },
 
+  // Clears the canvas context
   clear: function () {
     this._ctx.clearRect(0, 0, dime.Config.width, dime.Config.height);
   }

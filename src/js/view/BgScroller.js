@@ -1,7 +1,10 @@
 // BgScroller.js
+// - A repeating background image that scrolls with some speed
 
 'use strict';
 
+// Constructor for setting up a new background scroller with the given ordinal
+// and a callback to query scroller speed from.
 dime.BgScroller = function (imgOrdinal, speedCallback) {
   this.imgOrdinal = imgOrdinal;
   this.getMovementSpeed = speedCallback;
@@ -10,6 +13,7 @@ dime.BgScroller = function (imgOrdinal, speedCallback) {
 };
 
 dime.BgScroller.prototype = {
+  // Sets up the scrolling image based on the image ordinal
   setup: function () {
     var self = this, tempImg;
 
@@ -23,6 +27,7 @@ dime.BgScroller.prototype = {
     tempImg.src = dime.Config.gfxDir + 'bg' + self.imgOrdinal + ".png";
   },
 
+  // Draws the scroller to the given background
   draw: function (context) {
     if (this.isReady()) {
       context.save();
@@ -38,10 +43,13 @@ dime.BgScroller.prototype = {
     }
   },
 
+  // Returns a boolean indicating whether the background has finished loading
+  // or not.
   isReady: function () {
     return !!this.img;
   },
 
+  // Called on every tick of the game
   tick: function (delta) {
     if (this.isReady()) {
       var movement = dime.Utils.pxPerSec(this.getMovementSpeed());

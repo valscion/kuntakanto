@@ -1,4 +1,5 @@
 // Player.js
+// - A class representing a player
 
 'use strict';
 
@@ -6,21 +7,28 @@ dime.Player = function () {
   this.x = 80;
   this.y = 200;
 
+  // Acceleration in y-direction, related to gravity.
   this.yPlus = 0;
   this.midair = false;
 
+  // All the different frames are stored in this array
   this.frames = [];
   this.countOfReadyFrames = 0;
 
   this.currentFrame = 0;
   this.movedSinceLastFrame = 0;
 
+  // How fast does the player move currently
   this.speedInPxPerSec = 200;
 };
 
+// A constant for a nice running animation, tells how many pixels the player can
+// move forward before the frame is switched
 dime.Player.FRAME_LENGTH_IN_PX = 30;
 
 dime.Player.prototype = {
+
+  // Called in dime.Gfx.setup(), loads all the different frames for player
   setup: function () {
     var self = this, i, tempImg;
 
@@ -39,6 +47,7 @@ dime.Player.prototype = {
     }
   },
 
+  // Draws the current frame of the player to the given context
   draw: function (context) {
     if (this.isReady()) {
       context.save();
@@ -50,10 +59,13 @@ dime.Player.prototype = {
     }
   },
 
+  // Returns a boolean which indicates whether the player frames are all loaded
   isReady: function () {
     return (this.countOfReadyFrames == this.frames.length)
   },
 
+  // Called on every tick of the game (happens in Gfx.tick), this function
+  // updates players gravity and animation.
   tick: function (delta) {
     var modifier, movement;
     if (!this.isReady())
@@ -83,10 +95,12 @@ dime.Player.prototype = {
     }
   },
 
+  // Returns players current speed in pixels per second
   getSpeedInPxPerSec: function () {
     return this.speedInPxPerSec;
   },
 
+  // Makes the player jump. force is optional and defaults to 600
   jump: function (force) {
     if (this.canJump()) {
       this.yPlus = force || 600;
@@ -94,6 +108,7 @@ dime.Player.prototype = {
     }
   },
 
+  // Returns whether the player can currently jump or not
   canJump: function () {
     return !this.midair;
   }

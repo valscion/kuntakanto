@@ -1,17 +1,21 @@
 // Controllers.js
+// - A general object that will handle all specific controllers.
 
 'use strict';
 
 dime.Controllers = {
 
+  // All the keys this game will handle
   _keys: [
     { 'name': 'left',  'keyCode': 37, 'pressed': false },
     { 'name': 'right', 'keyCode': 39, 'pressed': false },
     { 'name': 'space', 'keyCode': 32, 'pressed': false }
   ],
 
+  // Specific controllers will be stored here, see setup() method
   _controllers: [],
 
+  // Initializes the key listeners
   init: function (document) {
     var self = this;
     document.onkeydown = function (event) {
@@ -25,6 +29,7 @@ dime.Controllers = {
 
   },
 
+  // Called when a key is pressed down
   _onKeyDown: function (keyCode) {
     var key = this.keyFromKeyCodeOrFalse(keyCode);
     if (key) {
@@ -33,6 +38,7 @@ dime.Controllers = {
     }
   },
 
+  // Called when a key is released
   _onKeyUp: function (keyCode) {
     var key = this.keyFromKeyCodeOrFalse(keyCode);
     if (key && key.pressed) {
@@ -41,6 +47,8 @@ dime.Controllers = {
     }
   },
 
+  // Returns a key from _keys array which has the given keyCode or false, if
+  // none was found.
   keyFromKeyCodeOrFalse: function (keyCode) {
     var i, key;
     for (i = 0; i < this._keys.length; i++) {
@@ -52,17 +60,8 @@ dime.Controllers = {
     return false;
   },
 
-  getKey: function (name) {
-    var i, key;
-    for (i = 0; i < this._keys.length; i++) {
-      key = this._keys[i];
-      if (key.name === name) {
-        return key;
-      }
-    }
-    throw new ReferenceError('Could not find key with name "' + name + '"');
-  },
-
+  // Triggers keyDown() method for all applicable controllers when a key is
+  // pressed down.
   triggerKeyDown: function (key) {
     var i, controller;
     for (i = 0; i < this._controllers.length; i++) {
@@ -73,6 +72,8 @@ dime.Controllers = {
     }
   },
 
+  // Triggers keyUp() method for all applicable controllers when a key is
+  // released.
   triggerKeyUp: function (key) {
     var i, controller;
     for (i = 0; i < this._controllers.length; i++) {
@@ -83,10 +84,12 @@ dime.Controllers = {
     }
   },
 
+  // Sets up all the controllers
   setup: function () {
     this._controllers.push(new dime.PlayerController(dime.Gfx._player));
   },
 
+  // Call tick() for all controllers that want to get ticked.
   tick: function (delta) {
     var i, controller;
     for (i = 0; i < this._controllers.length; i++) {

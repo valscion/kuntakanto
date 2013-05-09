@@ -1,11 +1,16 @@
 // Game.js
+// - Handles the booting of the game and calling tick for everything. The only
+//   thing you might need to modify here is the _objectsToSetupAndTick array.
 
 'use strict';
 
 dime.Game = {
 
+  // All the objects to call setup() when game is loaded and tick() on every
+  // frame.
   _objectsToSetupAndTick: [dime.Utils, dime.Gfx, dime.Controllers],
 
+  // Initializes the game and calls setup() for all the above objects
   init: function () {
     var i, loopedObject;
     for (i = 0; i < this._objectsToSetupAndTick.length; i++) {
@@ -17,11 +22,13 @@ dime.Game = {
     this.startTicking();
   },
 
+  // Starts the game
   startTicking: function () {
+    // Cross-browser requestAnimationFrame
     var requestAnimFrame = (function(){
-      return  window.requestAnimationFrame       ||
-      window.webkitRequestAnimationFrame ||
-      window.mozRequestAnimationFrame    ||
+      return  window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame   ||
+      window.mozRequestAnimationFrame      ||
       function( callback ){
         window.setTimeout(callback, 1000 / 60);
       };
@@ -32,6 +39,8 @@ dime.Game = {
       var delta = timePassedSinceFirstTick - lastTickTime;
       lastTickTime = timePassedSinceFirstTick;
 
+      // Call the callTickForAll-function with "this" set to dime.Game and first
+      // parameter set as delta.
       callTickForAll.call(dime.Game, delta);
       requestAnimFrame(tick);
     }
@@ -45,6 +54,7 @@ dime.Game = {
         }
       }
     }
+    // We need to call tick manually only once. Here it is.
     tick(0);
   }
 };
