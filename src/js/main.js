@@ -23,6 +23,7 @@ dime.init = function () {
   var canvas = findCanvasElement();
   setupCanvasElement(canvas);
   dime.Gfx.init(canvas.getContext('2d'));
+  dime.Controllers.init(window.top.document);
 
   dime.Game.init();
 };

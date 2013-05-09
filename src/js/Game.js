@@ -4,7 +4,7 @@
 
 dime.Game = {
 
-  _objectsToSetupAndTick: [dime.Utils, dime.Gfx],
+  _objectsToSetupAndTick: [dime.Utils, dime.Gfx, dime.Controllers],
 
   init: function () {
     var i, loopedObject;
