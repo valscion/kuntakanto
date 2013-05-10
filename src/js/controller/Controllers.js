@@ -91,6 +91,7 @@ dime.Controllers = {
   // Sets up all the controllers
   setup: function () {
     this._controllers.push(new dime.PlayerController(dime.Gfx._player));
+    this._controllers.push(new dime.GameStateController());
   },
 
   // Call tick() for all controllers that want to get ticked.
@@ -113,6 +114,27 @@ dime.Controllers = {
       if (controller.onGameStart) {
         controller.onGameStart();
       }
+    }
+  }
+};
+
+// The controller responsible for changing between different game modes
+dime.GameStateController = function () {
+};
+
+dime.GameStateController.prototype = {
+  handlesKeyUp: function (keyName) {
+    // Only handle keys when game has not started or game is over
+    if (!dime.Game.status.gameStarted || dime.Game.status.gameOver) {
+      if (keyName === 'space')
+        return true;
+    }
+  },
+
+  keyUp: function (keyName) {
+    if (!dime.Game.status.gameStarted && !dime.Game.status.gameOver) {
+      // Start the game.
+      dime.Game.start();
     }
   }
 };
