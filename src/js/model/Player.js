@@ -11,9 +11,9 @@ dime.Player = function () {
   this.yPlus = 0;
   this.midair = false;
 
-  // All the different frames are stored in this array
-  this.frames = [];
-  this.countOfReadyFrames = 0;
+  // This function will return all the frames that are loaded, or an empty
+  // array if all frames have not been loaded
+  this.getFrames = function () { return []; };
 
   this.currentFrame = 0;
   this.movedSinceLastFrame = 0;
@@ -30,38 +30,26 @@ dime.Player.prototype = {
 
   // Called in dime.Gfx.setup(), loads all the different frames for player
   setup: function () {
-    var self = this, i, tempImg;
-
-    for (i = 5; i >= 1; i--) {
-      tempImg = new Image();
-      tempImg.onload = function () {
-        self.countOfReadyFrames++;
-      }
-      (function (frameId) {
-        tempImg.onerror = function () {
-          console.warn('Failed to load frame ' + frameId + ' for player');
-        }
-      }(i));
-      tempImg.src = dime.Config.gfxDir + "ukkeli" + i + ".png";
-      this.frames.push(tempImg);
-    }
+    this.getFrames = dime.Utils.loadManyImages(['ukkeli1.png', 'ukkeli2.png',
+      'ukkeli3.png', 'ukkeli4.png', 'ukkeli5.png']);
   },
 
   // Draws the current frame of the player to the given context
   draw: function (context) {
     if (this.isReady()) {
+      var frames = this.getFrames();
       context.save();
 
-      var fixMiddle = -this.frames[0].width / 2;
+      var fixMiddle = -frames[0].width / 2;
       context.translate(this.x + fixMiddle, this.y);
-      context.drawImage(this.frames[this.currentFrame], 0, 0);
+      context.drawImage(frames[this.currentFrame], 0, 0);
       context.restore();
     }
   },
 
   // Returns a boolean which indicates whether the player frames are all loaded
   isReady: function () {
-    return (this.countOfReadyFrames == this.frames.length)
+    return (this.getFrames().length > 0)
   },
 
   // Called on every tick of the game (happens in Gfx.tick), this function
@@ -89,7 +77,7 @@ dime.Player.prototype = {
       if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
         this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;
         this.currentFrame++;
-        if (this.currentFrame >= this.frames.length) {
+        if (this.currentFrame >= this.getFrames().length) {
           this.currentFrame = 0;
         }
       }

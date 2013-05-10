@@ -9,22 +9,13 @@ dime.BgScroller = function (imgOrdinal, speedFactor) {
   this.imgOrdinal = imgOrdinal;
   this.speedFactor = speedFactor;
   this.x = 0;
-  this.img = null;
+  this.getImage = function () { return null; };
 };
 
 dime.BgScroller.prototype = {
   // Sets up the scrolling image based on the image ordinal
   setup: function () {
-    var self = this, tempImg;
-
-    tempImg = new Image();
-    tempImg.onload = function () {
-      self.img = tempImg;
-    }
-    tempImg.onerror = function () {
-      console.warn('Failed to load BgScroller ' + self.imgOrdinal);
-    }
-    tempImg.src = dime.Config.gfxDir + 'bg' + self.imgOrdinal + ".png";
+    this.getImage = dime.Utils.loadImage('bg' + this.imgOrdinal + ".png");
   },
 
   // Draws the scroller to the given background
@@ -33,11 +24,11 @@ dime.BgScroller.prototype = {
       context.save();
 
       context.translate(this.x, 0);
-      context.drawImage(this.img, 0, 0);
+      context.drawImage(this.getImage(), 0, 0);
 
-      if (this.x + this.img.width <= dime.Config.width) {
-        context.translate(this.img.width, 0);
-        context.drawImage(this.img, 0, 0);
+      if (this.x + this.getImage().width <= dime.Config.width) {
+        context.translate(this.getImage().width, 0);
+        context.drawImage(this.getImage(), 0, 0);
       }
       context.restore();
     }
@@ -46,7 +37,7 @@ dime.BgScroller.prototype = {
   // Returns a boolean indicating whether the background has finished loading
   // or not.
   isReady: function () {
-    return !!this.img;
+    return this.getImage() != null;
   },
 
   // Called on every tick of the game
@@ -54,8 +45,8 @@ dime.BgScroller.prototype = {
     if (this.isReady()) {
       this.x = -dime.Game.status.distanceRanInPx * this.speedFactor;
 
-      while (this.x + this.img.width < 0) {
-        this.x += this.img.width;
+      while (this.x + this.getImage().width < 0) {
+        this.x += this.getImage().width;
       }
     }
   }

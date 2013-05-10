@@ -5,7 +5,7 @@
 
 dime.BgSignContainer = function (baseLineY) {
   this.baseLineY = baseLineY;
-  this.signs = [];
+  this.getSigns = function () { return []; };
   this.countOfReadySigns = 0;
 };
 
@@ -13,31 +13,23 @@ dime.BgSignContainer.SIGN_LOCATIONS = [500, 5000, 9000, 140000, 18000, 20000];
 
 dime.BgSignContainer.prototype = {
   setup: function () {
-    var self = this, i, tempImg;
+    var signsArray = ['kyltti1.png', 'kyltti2.png', 'kyltti3.png',
+      'kyltti4.png', 'kyltti5.png', 'kyltti6.png', ];
 
-    for (i = 1; i <= dime.BgSignContainer.SIGN_LOCATIONS.length; i++) {
-      tempImg = new Image();
-      tempImg.onload = function () {
-        self.countOfReadySigns++;
-      }
-      (function (frameId) {
-        tempImg.onerror = function () {
-          console.warn('Failed to load sign ' + frameId);
-        }
-      }(i));
-      tempImg.src = dime.Config.gfxDir + "kyltti" + i + ".png";
-      this.signs.push(tempImg);
-    }
+    this.getSigns = dime.Utils.loadManyImages(signsArray);
   },
 
   isReady: function () {
-    return this.countOfReadySigns == this.signs.length;
+    return this.getSigns().length > 0;
   },
 
   draw: function (context) {
-    var i, signImg, x;
-    for (i = 0; i < this.signs.length; i++) {
-      signImg = this.signs[i];
+    var signs, i, signImg, x;
+
+    signs = this.getSigns();
+
+    for (i = 0; i < signs.length; i++) {
+      signImg = signs[i];
       x = dime.BgSignContainer.SIGN_LOCATIONS[i];
       x -= dime.Game.status.distanceRanInPx;
       context.drawImage(signImg, x, this.baseLineY);
