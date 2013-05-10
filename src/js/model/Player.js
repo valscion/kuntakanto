@@ -65,7 +65,7 @@ dime.Player.prototype = {
   // updates players gravity and animation.
   tick: function (delta) {
     var modifier, movement;
-    if (!this.isReady())
+    if (!this.isReady() || !dime.Game.isRunning())
       return;
 
     movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
@@ -134,5 +134,10 @@ dime.Player.prototype = {
 
   getHeight: function () {
     return this.fixtureHeight;
+  },
+
+  // Called when a collision to an obstacle happens
+  onCollision: function () {
+    dime.Game.endGameToFailure();
   }
 };

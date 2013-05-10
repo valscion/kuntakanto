@@ -17,7 +17,9 @@ dime.Game = {
 
   // Game status is stored here for general lookup
   status: {
-    distanceRanInPx: 0
+    distanceRanInPx: 0,
+    gameOver: false,
+    gameStarted: true
   },
 
   // Initializes the game and calls setup() for all the above objects
@@ -38,6 +40,22 @@ dime.Game = {
         return false;
     }
     return true;
+  },
+
+  // If the game is not over and has started, return true. false otherwise
+  isRunning: function () {
+    return (this.status.gameStarted && !this.status.gameOver);
+  },
+
+  // Ends the game to a failure
+  endGameToFailure: function () {
+    console.log("Game over, you failed!");
+    this.status.gameOver = true;
+  },
+
+  // Ends the game to a victory
+  endGameToVictory: function () {
+    this.status.gameOver = true;
   },
 
   // Starts the game

@@ -102,7 +102,7 @@ dime.ObstacleContainer = {
     playerH = player.getHeight();
 
     if (this.isColliding(playerX, playerY, playerW, playerH)) {
-      console.log('collision at ' + (new Date()));
+      player.onCollision();
     }
   }
 }
