@@ -9,6 +9,12 @@ dime.Gfx = {
   _player: null,
   _bgGraphics: [],
   _gui: null,
+  _notifSigns: {
+    start: null,
+    failure: null,
+    victory: null
+  },
+  _drawNotifSign: 'start',
 
   // Initializes the graphical context and private variables
   init: function (renderingContext) {
@@ -21,6 +27,10 @@ dime.Gfx = {
     this._bgGraphics.push(new dime.BgScroller(2, 0.1));
 
     this._gui = new dime.GUI();
+
+    this._notifSigns.start = new dime.NotificationSign('alkukyltti.png');
+    this._notifSigns.failure = new dime.NotificationSign('haviokyltti.png');
+    this._notifSigns.victory = new dime.NotificationSign('voittokyltti.png');
   },
 
   // Sets up all that needs to be set up (player, scroller, gui...)
@@ -31,6 +41,10 @@ dime.Gfx = {
       this._bgGraphics[i].setup();
     }
     this._gui.setup();
+
+    this._notifSigns.start.setup();
+    this._notifSigns.failure.setup();
+    this._notifSigns.victory.setup();
   },
 
   // Tells whether all graphics are loaded.
@@ -40,6 +54,11 @@ dime.Gfx = {
     for (var i = this._bgGraphics.length - 1; i >= 0; i--) {
       if (!this._bgGraphics[i].isReady()) return false;
     }
+    if (!this._notifSigns.start.isReady()) return false;
+    if (!this._notifSigns.failure.isReady()) return false;
+    if (!this._notifSigns.victory.isReady()) return false;
+
+    return true;
   },
 
   // Called on every frame, this handles ticking all the graphical things in
@@ -58,13 +77,18 @@ dime.Gfx = {
 
   // Draws all the graphics
   draw: function () {
-    var i;
+    var i, notifSign;
     for (i = this._bgGraphics.length - 1; i >= 0; i--) {
       this._bgGraphics[i].draw(this._ctx);
     }
     dime.ObstacleContainer.draw(this._ctx);
     this._player.draw(this._ctx);
     this._gui.draw(this._ctx);
+
+    if (this._drawNotifSign) {
+      notifSign = this._notifSigns[this._drawNotifSign];
+      notifSign.draw(this._ctx);
+    }
   },
 
   // Clears the canvas context
@@ -73,14 +97,40 @@ dime.Gfx = {
   },
 
   onGameStart: function () {
-    // ...
+    this._drawNotifSign = false;
   },
 
   onGameEndToFailure: function () {
-    // ...
+    this._drawNotifSign = 'failure';
   },
 
   onGameEndToVictory: function () {
-    // ...
+    this._drawNotifSign = 'victory';
   }
 };
+
+dime.NotificationSign = function (imageSource) {
+  this.imageSource = imageSource;
+  this.getImage = function () { return null; }
+};
+
+dime.NotificationSign.prototype = {
+  setup: function () {
+    this.getImage = dime.Utils.loadImage(this.imageSource);
+  },
+
+  draw: function (context) {
+    if (!this.isReady())
+      return;
+    // Find middle start coordinates
+    var img = this.getImage();
+    var x = (dime.Config.width - img.width) / 2;
+    var y = (dime.Config.height - img.height) / 2;
+
+    context.drawImage(img, x, y);
+  },
+
+  isReady: function () {
+    return this.getImage() != null;
+  }
+}
