@@ -52,14 +52,16 @@ dime.PlayerController.prototype = {
   },
 
   run: function (keyName) {
-    if (keyName === 'right' && this._runningStatus) {
-      this._runCorrectly();
-    }
-    else if (keyName === 'left' && !this._runningStatus) {
-      this._runCorrectly();
-    }
-    else {
-      this._runFail();
+    if (!this.player.midair) {
+      if (keyName === 'right' && this._runningStatus) {
+        this._runCorrectly();
+      }
+      else if (keyName === 'left' && !this._runningStatus) {
+        this._runCorrectly();
+      }
+      else {
+        this._runFail();
+      }
     }
   },
 
@@ -74,12 +76,19 @@ dime.PlayerController.prototype = {
   },
 
   tick: function (delta) {
-    if (this._lastSuccessfulHit > 0) {
-      var secondsSinceSuccess = this._lastSuccessfulHit / 1000;
-      var weighted = secondsSinceSuccess * ((this.player.getSpeed() * this.player.getSpeed()) * 0.000025);
-      this.player.modifySpeed(-weighted);
+    // While in mid-air, only slow down the speed down a little
+    if (this.player.midair) {
+      var modifyAmount = dime.Utils.pxPerSec(-20);
+      this.player.modifySpeed(modifyAmount);
     }
+    else {
+      if (this._lastSuccessfulHit > 0) {
+        var secondsSinceSuccess = this._lastSuccessfulHit / 1000;
+        var weighted = secondsSinceSuccess * ((this.player.getSpeed() * this.player.getSpeed()) * 0.000025);
+        this.player.modifySpeed(-weighted);
+      }
 
-    this._lastSuccessfulHit += delta;
+      this._lastSuccessfulHit += delta;
+    }
   }
 };
