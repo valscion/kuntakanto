@@ -8,7 +8,8 @@ dime.Game = {
 
   // All the objects to call setup() when game is loaded and tick() on every
   // frame.
-  _objectsToSetupAndTick: [dime.Utils, dime.Gfx, dime.Controllers, dime.Audio],
+  _objectsToSetupAndTick: [ dime.Utils, dime.Gfx, dime.Controllers, dime.Audio,
+                            dime.ObstacleContainer],
 
   // Game status is stored here for general lookup
   status: {

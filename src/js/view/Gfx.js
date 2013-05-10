@@ -53,6 +53,7 @@ dime.Gfx = {
     for (i = this._bgGraphics.length - 1; i >= 0; i--) {
       this._bgGraphics[i].draw(this._ctx);
     }
+    dime.ObstacleContainer.draw(this._ctx);
     this._player.draw(this._ctx);
     this._gui.draw(this._ctx);
   },
