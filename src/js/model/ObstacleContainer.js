@@ -76,7 +76,24 @@ dime.ObstacleContainer = {
 
     context.drawImage(img, x, this.baseLineY);
 
-    context.strokeRect(playerX, playerY, playerW, playerH);
+    this._drawCollisionAreas(context);
+  },
+
+  _drawCollisionAreas: function (context) {
+    var player = dime.Gfx._player;
+    var playerX, playerY, playerW, playerH;
+
+    playerX = player.getX() - dime.Game.status.distanceRanInPx;
+    playerY = player.getY();
+    playerW = player.getWidth();
+    playerH = player.getHeight();
+
+    var x = this.distanceBetweenTwoObstacles - dime.Game.status.distanceRanInPx;
+
+    while (x < -200) {
+      x += this.distanceBetweenTwoObstacles;
+    }
+    
 
     var rect2 = {
       x: x + this.obstacleOffset,
@@ -85,6 +102,7 @@ dime.ObstacleContainer = {
       h: this.obstacleSize
     };
 
+    context.strokeRect(playerX, playerY, playerW, playerH);
     context.strokeRect(rect2.x, rect2.y, rect2.w, rect2.h);
   },
 
