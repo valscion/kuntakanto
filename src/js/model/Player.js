@@ -138,6 +138,6 @@ dime.Player.prototype = {
 
   // Called when a collision to an obstacle happens
   onCollision: function () {
-    dime.Game.endGameToFailure();
+    dime.Game.endToFailure();
   }
 };

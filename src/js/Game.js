@@ -15,11 +15,15 @@ dime.Game = {
   // is ready, the game can't start.
   _objectsToQueryIsReady: [ dime.Gfx, dime.Audio, dime.ObstacleContainer ],
 
+  // Objects to call onGameStart(), onGameEndToFailure() and
+  // onGameEndToVictory() when the events happen.
+  _objectsToCallOnGameEvent: [ dime.Utils, dime.Gfx, dime.Controllers ],
+
   // Game status is stored here for general lookup
   status: {
     distanceRanInPx: 0,
     gameOver: false,
-    gameStarted: true
+    gameStarted: false
   },
 
   // Initializes the game and calls setup() for all the above objects
@@ -48,17 +52,38 @@ dime.Game = {
   },
 
   // Ends the game to a failure
-  endGameToFailure: function () {
+  endToFailure: function () {
+    var i, loopedObject;
+
     console.log("Game over, you failed!");
     this.status.gameOver = true;
+    this.status.gameStarted = false;
+
+    for (i = 0; i < this._objectsToCallOnGameEvent.length; i++) {
+      loopedObject = this._objectsToCallOnGameEvent[i];
+      if ('function' === typeof loopedObject.onGameEndToFailure) {
+        loopedObject.onGameEndToFailure();
+      }
+    }
   },
 
   // Ends the game to a victory
-  endGameToVictory: function () {
+  endToVictory: function () {
+    var i, loopedObject;
+
+    console.log("We have victory!");
     this.status.gameOver = true;
+    this.status.gameStarted = false;
+
+    for (i = 0; i < this._objectsToCallOnGameEvent.length; i++) {
+      loopedObject = this._objectsToCallOnGameEvent[i];
+      if ('function' === typeof loopedObject.onGameEndToVictory) {
+        loopedObject.onGameEndToVictory();
+      }
+    }
   },
 
-  // Starts the game
+  // Starts the ticking, but not necessarily the whole game
   startTicking: function () {
     // Cross-browser requestAnimationFrame
     var requestAnimFrame = (function(){
@@ -95,5 +120,19 @@ dime.Game = {
     }
     // We need to call tick manually only once. Here it is.
     tick(0);
+  },
+
+  // Starts the game itself
+  start: function () {
+    var i, loopedObject;
+
+    this.status.gameStarted = true;
+
+    for (i = 0; i < this._objectsToCallOnGameEvent.length; i++) {
+      loopedObject = this._objectsToCallOnGameEvent[i];
+      if ('function' === typeof loopedObject.onGameStart) {
+        loopedObject.onGameStart();
+      }
+    }
   }
 };

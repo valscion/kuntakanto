@@ -26,6 +26,11 @@ dime.PlayerController.prototype = {
 
   handlesKeyUp: function (keyName) {
     var i, handledKey;
+
+    // Don't handle anything when the game is not running
+    if (!dime.Game.isRunning())
+      return false;
+
     for (i = 0; i < this._keysToHandle.length; i++) {
       handledKey = this._keysToHandle[i];
       if (handledKey === keyName) {
@@ -76,6 +81,10 @@ dime.PlayerController.prototype = {
   },
 
   tick: function (delta) {
+    // Don't do anything when the game is not running
+    if (!dime.Game.isRunning())
+      return;
+
     // While in mid-air, only slow down the speed down a little
     if (this.player.midair) {
       var modifyAmount = dime.Utils.pxPerSec(-20);
@@ -90,5 +99,11 @@ dime.PlayerController.prototype = {
 
       this._lastSuccessfulHit += delta;
     }
+  },
+
+  // On game start, reset.
+  onGameStart: function () {
+    this._lastSuccessfulHit = -1;
+    this._runningStatus = false;
   }
 };

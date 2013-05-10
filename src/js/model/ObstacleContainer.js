@@ -111,6 +111,9 @@ dime.ObstacleContainer = {
   },
 
   tick: function (delta) {
+    if (!dime.Game.isRunning())
+      return;
+    
     var player = dime.Gfx._player;
     var playerX, playerY, playerW, playerH;
 

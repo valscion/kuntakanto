@@ -102,5 +102,17 @@ dime.Controllers = {
         controller.tick(delta);
       }
     }
+  },
+
+  // Call onGameStart() on every controller which has that function when this
+  // is called, when the game is started.
+  onGameStart: function () {
+    var i, controller;
+    for (i = 0; i < this._controllers.length; i++) {
+      controller = this._controllers[i];
+      if (controller.onGameStart) {
+        controller.onGameStart();
+      }
+    }
   }
 };

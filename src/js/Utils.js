@@ -64,5 +64,9 @@ dime.Utils = {
   // move the player a certain amount of pixels per second.
   pxPerSec: function (px) {
     return (px * this._lastDelta) / 1000;
+  },
+
+  onGameStart: function () {
+    this._lastDelta = 0;
   }
 }

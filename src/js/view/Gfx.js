@@ -70,6 +70,17 @@ dime.Gfx = {
   // Clears the canvas context
   clear: function () {
     this._ctx.clearRect(0, 0, dime.Config.width, dime.Config.height);
-  }
+  },
 
+  onGameStart: function () {
+    // ...
+  },
+
+  onGameEndToFailure: function () {
+    // ...
+  },
+
+  onGameEndToVictory: function () {
+    // ...
+  }
 };
