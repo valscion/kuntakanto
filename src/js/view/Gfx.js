@@ -98,6 +98,10 @@ dime.Gfx = {
 
   onGameStart: function () {
     this._drawNotifSign = false;
+    this._player.onGameStart();
+    for (var i = this._bgGraphics.length - 1; i >= 0; i--) {
+      this._bgGraphics[i].onGameStart();
+    }
   },
 
   onGameEndToFailure: function () {

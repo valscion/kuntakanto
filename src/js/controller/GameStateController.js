@@ -16,9 +16,6 @@ dime.GameStateController.prototype = {
   },
 
   keyUp: function (keyName) {
-    if (!dime.Game.status.gameStarted && !dime.Game.status.gameOver) {
-      // Start the game.
-      dime.Game.start();
-    }
+    dime.Game.start();
   }
 };

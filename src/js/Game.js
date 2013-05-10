@@ -127,6 +127,7 @@ dime.Game = {
     var i, loopedObject;
 
     this.status.gameStarted = true;
+    this.status.gameOver = false;
 
     for (i = 0; i < this._objectsToCallOnGameEvent.length; i++) {
       loopedObject = this._objectsToCallOnGameEvent[i];

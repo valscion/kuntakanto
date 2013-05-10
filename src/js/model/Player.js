@@ -139,5 +139,18 @@ dime.Player.prototype = {
   // Called when a collision to an obstacle happens
   onCollision: function () {
     dime.Game.endToFailure();
+  },
+
+  // Called when the game starts or it is reset
+  onGameStart: function () {
+    this.x = 80;
+    this.y = dime.Player.BASELINE_Y;
+    this.yPlus = 0;
+    this.midair = false;
+    this.currentFrame = 0;
+    this.movedSinceLastFrame = 0;
+    this.speedInPxPerSec = 200;
+
+    dime.Game.status.distanceRanInPx = 0;
   }
 };

@@ -38,5 +38,9 @@ dime.BgSignContainer.prototype = {
 
   tick: function (delta) {
     // ...
+  },
+
+  onGameStart: function () {
+    // ...
   }
 };

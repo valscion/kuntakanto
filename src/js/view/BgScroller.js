@@ -49,5 +49,9 @@ dime.BgScroller.prototype = {
         this.x += this.getImage().width;
       }
     }
+  },
+
+  onGameStart: function () {
+    this.x = 0;
   }
 };
