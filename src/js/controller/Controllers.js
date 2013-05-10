@@ -21,10 +21,14 @@ dime.Controllers = {
     document.onkeydown = function (event) {
       var keyCode = event.keyCode;
       self._onKeyDown(keyCode);
+      // Don't let the browser do anything silly.
+      return false;
     };
     document.onkeyup = function (event) {
       var keyCode = event.keyCode;
       self._onKeyUp(keyCode);
+      // Don't let the browser do anything silly.
+      return false;
     };
 
   },
