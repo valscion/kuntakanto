@@ -9,7 +9,7 @@ dime.BgSignContainer = function (baseLineY) {
   this.countOfReadySigns = 0;
 };
 
-dime.BgSignContainer.SIGN_LOCATIONS = [500, 5000, 9000, 140000, 18000, 20000];
+dime.BgSignContainer.SIGN_LOCATIONS = [500, 5000, 9000, 135000, 17000, 19500];
 
 dime.BgSignContainer.prototype = {
   setup: function () {
