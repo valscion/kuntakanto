@@ -71,24 +71,33 @@ dime.Player.prototype = {
     movement = dime.Utils.pxPerSec(this.speedInPxPerSec);
     dime.Game.status.distanceRanInPx += movement;
     if (this.midair) {
-      modifier = delta / 1000;
-      this.yPlus -= dime.Config.gravity * modifier;
-      this.y -= this.yPlus * modifier;
-
-      if (this.y > dime.Player.BASELINE_Y) {
-        this.y = dime.Player.BASELINE_Y;
-        this.yPlus = 0;
-        this.midair = false;
-      }
+      this._updateJumping(delta);
     }
     else {
-      this.movedSinceLastFrame += movement;
-      if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
-        this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;
-        this.currentFrame++;
-        if (this.currentFrame >= this.getFrames().length) {
-          this.currentFrame = 0;
-        }
+      this._updateRunAnimation(movement);
+    }
+  },
+
+  _updateJumping: function (delta) {
+    var modifier;
+    modifier = delta / 1000;
+    this.yPlus -= dime.Config.gravity * modifier;
+    this.y -= this.yPlus * modifier;
+
+    if (this.y > dime.Player.BASELINE_Y) {
+      this.y = dime.Player.BASELINE_Y;
+      this.yPlus = 0;
+      this.midair = false;
+    }
+  },
+
+  _updateRunAnimation: function (movement) {
+    this.movedSinceLastFrame += movement;
+    if (this.movedSinceLastFrame > dime.Player.FRAME_LENGTH_IN_PX) {
+      this.movedSinceLastFrame -= dime.Player.FRAME_LENGTH_IN_PX;
+      this.currentFrame++;
+      if (this.currentFrame >= this.getFrames().length) {
+        this.currentFrame = 0;
       }
     }
   },
