@@ -9,9 +9,13 @@ dime.Audio = {
   },
 
   playSound: function () {
-    if (this.jumpsound.readyState == HTMLMediaElement.HAVE_ENOUGH_DATA) {
+    if (this.isReady()) {
       this.jumpsound.play();
     }
+  },
+
+  isReady: function () {
+    return this.jumpsound.readyState == HTMLMediaElement.HAVE_ENOUGH_DATA;
   }
 
 }

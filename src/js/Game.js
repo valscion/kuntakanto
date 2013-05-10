@@ -11,6 +11,10 @@ dime.Game = {
   _objectsToSetupAndTick: [ dime.Utils, dime.Gfx, dime.Controllers, dime.Audio,
                             dime.ObstacleContainer],
 
+  // All the objects to query isReady() function status for. Before everything
+  // is ready, the game can't start.
+  _objectsToQueryIsReady: [ dime.Gfx, dime.Audio, dime.ObstacleContainer ],
+
   // Game status is stored here for general lookup
   status: {
     distanceRanInPx: 0
@@ -26,6 +30,14 @@ dime.Game = {
       }
     }
     this.startTicking();
+  },
+
+  isEverythingReady: function () {
+    for (var i = 0; i < this._objectsToQueryIsReady; i++) {
+      if (!this._objectsToQueryIsReady[i].isReady())
+        return false;
+    }
+    return true;
   },
 
   // Starts the game
@@ -53,6 +65,9 @@ dime.Game = {
 
     function callTickForAll(delta) {
       var i, loopedObject;
+      if (!this.isEverythingReady())
+        return;
+
       for (i = 0; i < this._objectsToSetupAndTick.length; i++) {
         loopedObject = this._objectsToSetupAndTick[i];
         if ('function' === typeof loopedObject.tick) {

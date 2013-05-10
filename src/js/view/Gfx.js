@@ -33,6 +33,15 @@ dime.Gfx = {
     this._gui.setup();
   },
 
+  // Tells whether all graphics are loaded.
+  isReady: function () {
+    if (!this._player.isReady()) return false;
+    if (!this._gui.isReady()) return false;
+    for (var i = this._bgGraphics.length - 1; i >= 0; i--) {
+      if (!this._bgGraphics[i].isReady()) return false;
+    }
+  },
+
   // Called on every frame, this handles ticking all the graphical things in
   // the game as well.
   tick: function (delta) {
