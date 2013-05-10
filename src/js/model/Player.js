@@ -26,7 +26,7 @@ dime.Player = function () {
   this.movedSinceLastFrame = 0;
 
   // How fast does the player move currently
-  this.speedInPxPerSec = 200;
+  this.speedInPxPerSec = 0;
 };
 
 // A constant for a nice running animation, tells how many pixels the player can
@@ -166,7 +166,7 @@ dime.Player.prototype = {
     this.midair = false;
     this.currentFrame = 0;
     this.movedSinceLastFrame = 0;
-    this.speedInPxPerSec = 200;
+    this.speedInPxPerSec = 0;
 
     dime.Game.status.distanceRanInPx = 0;
   }
