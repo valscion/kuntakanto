@@ -13,8 +13,8 @@ dime.BgSignContainer.SIGN_LOCATIONS = [500, 5000, 9000, 140000, 18000, 20000];
 
 dime.BgSignContainer.prototype = {
   setup: function () {
-    var signsArray = ['kyltti1.png', 'kyltti2.png', 'kyltti3.png',
-      'kyltti4.png', 'kyltti5.png', 'kyltti6.png', ];
+    var signsArray = [ 'kyltti1.png', 'kyltti2.png', 'kyltti3.png',
+      'kyltti4.png', 'kyltti5.png', 'kyltti6.png' ];
 
     this.getSigns = dime.Utils.loadManyImages(signsArray);
   },

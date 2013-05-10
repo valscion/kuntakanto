@@ -76,6 +76,8 @@ dime.Player.prototype = {
     else {
       this._updateRunAnimation(movement);
     }
+
+    this._checkForVictory();
   },
 
   _updateJumping: function (delta) {
@@ -99,6 +101,12 @@ dime.Player.prototype = {
       if (this.currentFrame >= this.getFrames().length) {
         this.currentFrame = 0;
       }
+    }
+  },
+
+  _checkForVictory: function () {
+    if (dime.Game.getDistanceLeftInKm() <= 0) {
+      dime.Game.endToVictory();
     }
   },
 

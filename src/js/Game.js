@@ -51,6 +51,10 @@ dime.Game = {
     return (this.status.gameStarted && !this.status.gameOver);
   },
 
+  getDistanceLeftInKm: function () {
+    return 10 - this.status.distanceRanInPx / 2000;
+  },
+
   // Ends the game to a failure
   endToFailure: function () {
     var i, loopedObject;
@@ -74,6 +78,7 @@ dime.Game = {
     console.log("We have victory!");
     this.status.gameOver = true;
     this.status.gameStarted = false;
+    this.status.distanceRanInPx = 20000;
 
     for (i = 0; i < this._objectsToCallOnGameEvent.length; i++) {
       loopedObject = this._objectsToCallOnGameEvent[i];
